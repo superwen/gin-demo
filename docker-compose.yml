@@ -1,0 +1,27 @@
+mysql:
+  image: mysql:5.7
+  command:
+    - --default-authentication-plugin=mysql_native_password
+    - --collation-server=utf8mb4_unicode_ci
+  restart: always
+  environment:
+    - MYSQL_ROOT_PASSWORD=portalhuan2009
+    - MYSQL_DATABASE=wordpress
+    - MYSQL_USER=wordpress
+    - MYSQL_PASSWORD=wordpress2009
+  volumes:
+    - /hwdata/mysql:/var/lib/mysql
+    - /hwdata/mysql/custom-conf.d:/etc/mysql/conf.d
+  ports:
+    - 3306:3306
+web:
+  image: wordpress
+  links:
+    - mysql
+  environment:
+    - WORDPRESS_DB_PASSWORD=123456
+  ports:
+    - "127.0.0.3:8080:80"
+  working_dir: /var/www/html
+  volumes:
+    - wordpress:/var/www/html
